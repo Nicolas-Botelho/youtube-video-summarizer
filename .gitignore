@@ -1,5 +1,12 @@
+# config
 bin
 lib*
 CACHEDIR.TAG
 pyvenv.cfg
+.lock
+
+# cache
 __pycache__*
+
+# env
+.env
