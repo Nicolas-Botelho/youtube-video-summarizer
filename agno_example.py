@@ -1,6 +1,5 @@
 from agno.agent import Agent
 from agno.tools.youtube import YouTubeTools
-# from agno.tools.visualization import VisualizationTools
 from agno.media import Video
 from youtube_transcript_api import YouTubeTranscriptApi
 from dotenv import load_dotenv
@@ -44,5 +43,5 @@ except:
 finally:
   result = hello_world.run('# Video URL\n' + url + f"\n\n# Transcript\n{trasncript}")
 
-  print(result.content)
-  print(result.metrics)
+print(result.content)
+print(result.metrics)
