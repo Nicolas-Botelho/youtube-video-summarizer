@@ -11,7 +11,7 @@ module.exports = async (params) => {
         let responseData = await requestUrl({
             url: agenteUrl,
             method: 'POST',
-            Headers: {
+            headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({

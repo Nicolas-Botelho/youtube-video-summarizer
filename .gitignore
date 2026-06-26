@@ -4,6 +4,7 @@ lib*
 CACHEDIR.TAG
 pyvenv.cfg
 .lock
+.venv
 
 # cache
 __pycache__*
