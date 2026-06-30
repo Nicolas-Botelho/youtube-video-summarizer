@@ -18,7 +18,7 @@ Nesse cenário, existe uma gama muito ampla de informações disponíveis, entã
 
 == Proposta
 
-Pensando nisso, e também no cenário de popularização de _Large Language Models_ (LLMs), como Gemini, ChatGPT e Claude, esse trabalho propõe uma ferramenta que usa LLM para gerar resumos de vídeos do YouTube e coloca esses resumos no #link("https://obsidian.md/", "Obsidian"), uma ferramenta gratuita e _offline_ de escrita de notas e gestão de conhecimento.
+Pensando nisso, e também no cenário de popularização de _Large Language Models_ (LLMs), como Gemini, ChatGPT e Claude, esse trabalho propõe uma ferramenta que usa um agente baseados em LLM, nesse caso, utilizando Agno e Gemini, para gerar resumos de vídeos do YouTube através de sua URL e colocar esses resumos no #link("https://obsidian.md/", "Obsidian"), uma ferramenta gratuita e _offline_ de escrita de notas e gestão de conhecimento através dos _plugins_ do próprio Obsidian.
 
 = Arquitetura
 
