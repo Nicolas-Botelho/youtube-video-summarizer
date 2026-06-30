@@ -12,24 +12,30 @@ class reqModel(BaseModel):
 load_dotenv()
 
 def get_youtube_id(url: str):
-    pattern = r'(?:v=|\/shorts\/|\/embed\/|\/v\/|youtu\.be\/)([a-zA-Z0-9_-]{11})'
-    match = re.search(pattern, url)
+  pattern = r'(?:v=|\/shorts\/|\/embed\/|\/v\/|youtu\.be\/)([a-zA-Z0-9_-]{11})'
+  match = re.search(pattern, url)
 
-    print(match)
-    return match.group(1) if match else None
+  return match.group(1) if match else None
 
-def llm_summarizer(agent: Agent, url: str):
-    yta = YouTubeTranscriptApi()
-    trasncript = ""
+def video_transcript(url: str) -> str:
+  """
+  Args:
+    url: youtube video url
+  Returns:
+    transcript: given url video transcript
+  """
 
-    try:
-        fetched = yta.fetch(get_youtube_id(url), languages=['pt', 'en', 'sp', 'fr'])
-        for snippet in fetched:
-            trasncript += snippet.text + "\n"
-    except:
-        trasncript = "no transcript"
+  yta = YouTubeTranscriptApi()
+  trasncript = ""
+
+  try:
+    fetched = yta.fetch(get_youtube_id(url), languages=['pt', 'en', 'sp', 'fr'])
+    for snippet in fetched:
+      trasncript += snippet.text + "\n"
+  except:
+    trasncript = "no transcript"
     
-    return agent.run('# Video URL\n' + url + f"\n\n# Transcript\n{trasncript}").content
+  return trasncript
 
 api = FastAPI()
 
@@ -49,17 +55,15 @@ You are tasked with summarizing the video below focusing on its context and main
 - Answer with text only
 - Make your answer in topics, following the main points of the video
 - The first topic must be a introduction to the general context of the video and the last topic must a conclusion
-- If you can not use the Youtube Tool in any meaningful way, use the given transcript
+- If you can not use the Youtube Tool in any meaningful way, use the video transcript tool
 """
-
-  print(req)
 
   summarizer_agent = Agent(
     name="summarizer_agent",
     model="google:gemini-2.5-flash",
-    tools=[YouTubeTools()],
+    tools=[YouTubeTools(), video_transcript],
     instructions=prompt,
     markdown=True,
     telemetry=True)
 
-  return {"data": llm_summarizer(summarizer_agent, req.url)}
+  return {"data": summarizer_agent.run('# Video URL\n' + req.url).content}
