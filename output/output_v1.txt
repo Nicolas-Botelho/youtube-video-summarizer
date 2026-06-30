@@ -1,0 +1,45 @@
+TOOL CALLS
+                          
+ID: '72ab5927-9773-471d-a30b-8d8cbc0cbfbd'
+Name: 'get_youtube_video_data'
+Arguments: 'url: https://youtu.be/kI2e0o3sIVM?si=0oKuEjv33ueNgwOI'
+
+ID: 'cb4a27ef-22ac-4f9e-98a9-878bd78674c8'
+Name: 'video_transcript'
+Arguments: 'url: https://youtu.be/kI2e0o3sIVM?si=0oKuEjv33ueNgwOI'
+
+METRICS              
+Tokens: input=1376, output=560, total=1936, reasoning=458
+
+Duration:             6.0212s
+Tokens per second:    93.0041 tokens/s
+Time to first token:  6.0212s
+
+OUTPUT
+
+Here is a summary of the video about Typst:                               
+
+*   **Introduction to Typst:**
+This video is a fast-paced, "Fireship tribute" style introduction to Typst, a modern, blazingly fast, and Rust-based typesetting language. It was developed in 2019 by German university students seeking an alternative to LaTeX due to its awkward syntax and slow compilation speeds. Typst aims to provide a more efficient and user-friendly experience for creating     documents.                                                                
+*   **Key Features and Performance:**
+Typst stands out with its exceptional performance, utilizing incremental compilation and an advanced memoization scheme. This allows it to compile documents dramatically faster than LaTeX, often by orders of magnitude. It is capable of rendering various outputs including PDFs, images, HTML, and vector graphics, while supporting high-level scripting features.
+
+*   **Getting Started and Basic Syntax:**
+Users can get started with Typst by installing it locally using Cargo or by creating a free account on typst.app to use its web editor.
+Documents are created with a `.typ` extension and compiled into PDFs (or other formats using the `-f` flag) using the `typst compile` command. The syntax is designed to be intuitive:
+*   Text renders directly.
+*   Dollar signs define inline math, which is less verbose than LaTeX.
+*   Underscores create italics, similar to Markdown.
+*   Spaces are used for multi-line math.
+*   Fractions are defined with a simple slash.
+*   The alt modifier accesses Greek characters.
+*   Equal signs create headings, nestable up to five levels.
+                  
+*   **Advanced Scripting Capabilities:**
+Typst truly shines with its powerful scripting features. Users can declare variables using `let` and reference them with `#`. The `range` function creates iterable objects, and the spread syntax combined with the `table` element can automatically generate columns. Functions can be defined with `let`, support implicit returns based on conditional logic, and are both recursive and first-class. These scripting features enable dynamic content generation and complex document structures.
+
+*   **Customization and Ecosystem:**
+The language provides `set` commands for customizing page layouts and heading numbering. Furthermore, Typst boasts a rich ecosystem of packages and templates, allowing users to create a wide variety of documents, from complex circuit diagrams to professional resumes, with ease and flexibility.
+
+* **Conclusion:**
+Typst presents itself as a compelling modern alternative to traditional typesetting systems. Its focus on speed, simplified syntax, and robust scripting capabilities makes it an attractive choice for anyone looking for an efficient and powerful document creation tool.

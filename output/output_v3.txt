@@ -1,0 +1,66 @@
+TOOL CALLS
+
+ID: '26e240e3-27c2-42ea-b05a-6b48c081c7c7'
+Name: 'get_youtube_video_captions'
+Arguments: 'url: https://youtu.be/ZWfrI5Bu6so?si=Dow0uoeX7YMOE08T'    
+
+ID: 'fd08d703-2162-420b-be08-f84b2e094a2f'
+Name: 'get_youtube_video_data'
+Arguments: 'url: https://youtu.be/ZWfrI5Bu6so?si=Dow0uoeX7YMOE08T'
+OBS: Tool did not find captions
+
+- ID: 'a6348fb0-9917-419a-9f60-898f2596e175'
+Name: 'video_transcript'
+Arguments: 'url: https://youtu.be/ZWfrI5Bu6so?si=Dow0uoeX7YMOE08T'
+
+METRICS
+
+Tokens: input=3912, output=912, total=4824, reasoning=444
+
+Duration:             7.7084s
+Tokens per second:    118.3124 tokens/s
+Time to first token:  7.7084s
+
+OUTPUT
+
+The video introduces Clean Architecture, a concept proposed by Uncle Bob, as a method for building highly flexible and maintainable software solutions. It emphasizes organizing a project to be easily understandable and adaptable as it grows.
+
+### Introduction to Software Architecture
+Before diving into Clean Architecture, the video defines software architecture as the design of a system in terms of its software components, their relationships, and the patterns and constraints that guide their composition. It's about organizing code into classes, files, components, or modules and how these groups interact, ultimately defining where the application executes its core functionality and how it interacts with other resources like databases and user interfaces.
+
+### Core Concept of Clean Architecture
+The foundation of Clean Architecture is the **Dependency Rule**, which states that source code dependencies can only point inwards. This means that inner layers should not know anything about outer layers. The architecture is represented by concentric circles, where each circle represents a different layer of the application. The goal is to separate the stable core business rules from volatile external components, making the system easy to change.
+
+### The Concentric Layers Explained
+
+*   **Entities (Innermost Circle):**
+    *   Encapsulates the core business rules for the entire application.
+    *   These rules are critical to the correct functioning of the application and exist independently of any specific application.
+    *   Entities have no dependencies on any external layers.
+
+*   **Use Cases (Second Circle):**
+    *   Contains application-specific business rules.
+    *   Determines the system's behavior by orchestrating the flow of data to and from entities, directing them to achieve specific goals.
+    *   Use Cases interact with and depend on Entities but are unaware of the outermost layers (e.g., whether the interface is a web page or mobile app, or where data is stored). They define interfaces or use abstract classes for communication with external layers.
+
+*   **Adapters (Third Circle):**
+    *   Also known as interface adapters, they act as translators between the domain (Entities and Use Cases) and the infrastructure.
+    *   They adapt input data from the user interface into a format suitable for Use Cases and Entities, and adapt output data from Use Cases and Entities for display on the UI or storage in the database.
+    *   This layer might contain presenters, views, and controllers in an MVC architecture. Importantly, no code in this layer should know anything about the database.
+
+*   **Infrastructure (Outermost Circle):**
+    *   This layer houses all input/output components, including the user interface, databases, frameworks, devices, etc.
+    *   It contains all the "details" of the application, such as the UI and database, which are highly volatile and prone to frequent changes.
+    *   This layer is kept as far as possible from the domain layers to facilitate easy changes or swapping of components without affecting the core business rules. There is no direct dependency between this layer and the others.
+
+### Communication Between Layers
+Communication across layer boundaries is achieved through the **Dependency Inversion Principle**. Instead of a direct call that would violate the Dependency Rule (e.g., a Use Case calling a Presenter directly), an inner layer (e.g., a Use Case) calls an interface (an "output port"), and an outer layer (e.g., the Presenter) implements that interface. This ensures dependencies always point inwards.
+
+### Data Crossing Boundaries
+Data passing between layers should use simple, isolated data structures like Data Transfer Objects (DTOs). This prevents data structures from introducing dependencies that violate the Dependency Rule. Data can be passed as arguments in method calls, packed into hashmaps, or transported in dedicated data objects.
+
+### Assembling Components
+To bring all components together while maintaining their interdependence, a "Main" module is used. This Main module depends on all other components to wire them up, but no other component depends on Main. This setup leverages interfaces extensively, ensuring components don't need to know about each other's implementations.
+
+### Conclusion
+Clean Architecture provides a structured approach to software design that prioritizes separation of concerns, testability, and maintainability. By strictly adhering to the Dependency Rule and organizing code into well-defined, independent layers, the architecture allows for significant flexibility and sustainability, making it easier to evolve and adapt the application over time. The extensive use of interfaces is a key aspect of achieving this independence and flexibility.
