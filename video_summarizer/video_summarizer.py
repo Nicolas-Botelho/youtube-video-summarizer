@@ -11,12 +11,19 @@ class reqModel(BaseModel):
 
 load_dotenv()
 
+def get_youtube_id(url: str):
+    pattern = r'(?:v=|\/shorts\/|\/embed\/|\/v\/|youtu\.be\/)([a-zA-Z0-9_-]{11})'
+    match = re.search(pattern, url)
+
+    print(match)
+    return match.group(1) if match else None
+
 def llm_summarizer(agent: Agent, url: str):
     yta = YouTubeTranscriptApi()
     trasncript = ""
 
     try:
-        fetched = yta.fetch("zs_zpMnwNMs", languages=['pt', 'en', 'sp', 'fr'])
+        fetched = yta.fetch(get_youtube_id(url), languages=['pt', 'en', 'sp', 'fr'])
         for snippet in fetched:
             trasncript += snippet.text + "\n"
     except:
