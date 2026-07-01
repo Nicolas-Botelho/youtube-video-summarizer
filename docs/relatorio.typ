@@ -20,11 +20,11 @@ Além disso, há uma popularização de _Large Language Models_ (LLMs), como Cha
 
 == Problema
 
-Nesse cenário, existe uma gama muito ampla de informações disponíveis, então, nem sempre é possível ir a fundo em todas elas. Além disso nem todas as fontes de informação são, de fato, relevantes em seu conteúdo.
+Nesse cenário, existe uma gama muito ampla de informações disponíveis, então, nem sempre é possível ir a fundo em todas elas. Além disso, nem todas as fontes de informação são, de fato, relevantes em seu conteúdo.
 
 == Objetivo Geral
 
-Desenvolver uma ferramenta que seja capaz de resumir vídeos do YouTube dada a URL do vídeo para ajudar na compreensão do conteúdo do mesmo a partir do resumo criado.
+Desenvolver uma ferramenta que seja capaz de resumir vídeos do YouTube dada a _Universal Resource Locator_ (URL) do vídeo para ajudar na compreensão do conteúdo do mesmo a partir do resumo criado.
 
 == Proposta
 
@@ -49,7 +49,7 @@ Um agente de IA é o fundamento da aplicação de IA em diversos cenários @llm_
 - Sensores: Mecanismos responsáveis captação dos sinais ou percepções;
 - Atuadores: Mecanismos responsáveis por realizar a ação decidida pelo agente no ambiente com base nos sinais captados pelos sensores.
 
-Além disso, também há o padrão ReAct (_reasoning and acting_) @react. Esse padrão consiste na sinergia de raciocínio da LLM, como foi o foco de Yao et al., com as suas ações. A ideia é se utilizar de raciocínio para apoiar a tomada de decisão da LLM (ação) atual e também em ações ou raciocínios futuros. Algumas vantagens desse padrão são:
+Além disso, também há o padrão _Reasoning and Acting_ (ReAct) @react. Esse padrão consiste na sinergia de raciocínio da LLM, como foi o foco de Yao et al., com as suas ações. A ideia é se utilizar de raciocínio para apoiar a tomada de decisão da LLM (ação) atual e também em ações ou raciocínios futuros. Algumas vantagens desse padrão são:
 - Os _prompts_ dentro desse padrão são fáceis de construir e intuitivos;
 - O padrão é flexível e abrangente, podendo ser aplicado em diversos cenários;
 - O padrão é robusto, ao mesmo tempo que é performático; e
@@ -71,19 +71,19 @@ Outra vantagem do Agno é o SDK oferece suporte para o padrão ReAct através de
 
 == Arquitetura da ferramenta
 
-A ferramenta foi dividida em duas camadas que se comunicam por meio de um processo filho: um *plugin do Obsidian*, escrito em TypeScript, responsável pela interface com o usuário, e um *script em Python*, responsável por toda a lógica de obtenção da transcrição e geração do resumo.
+A ferramenta foi dividida em duas camadas que se comunicam por meio de um processo filho: um *_plugin_ do Obsidian*, escrito em TypeScript, responsável pela interface com o usuário, e um *_script_ em Python*, responsável por toda a lógica de obtenção da transcrição e geração do resumo.
 
-O plugin Obsidian é responsável por:
-- Detectar, no primeiro uso, se o usuário já possui uma chave de API do Gemini configurada e, caso não possua, solicitá-la através de uma janela modal, com um _link_ direto para o Google AI Studio;
-- Armazenar essa chave localmente, junto aos dados do plugin dentro do _vault_ do usuário;
+O _plugin_ Obsidian é responsável por:
+- Detectar, no primeiro uso, se o usuário já possui uma chave de _Application Programming Interface_ (API) do Gemini configurada e, caso não possua, solicitá-la através de uma janela modal, com um _link_ direto para o Google AI Studio;
+- Armazenar essa chave localmente, junto aos dados do _plugin_ dentro do _vault_ do usuário;
 - Expor um comando ("_Summarize YouTube video_") que abre uma janela para o usuário inserir a URL do vídeo desejado;
-- Disparar, a cada execução, um processo filho (_child process_) chamando o interpretador Python configurado, passando a URL do vídeo como argumento e a chave de API através de uma variável de ambiente, evitando que ela fique exposta em logs ou na lista de processos do sistema operacional; e
+- Disparar, a cada execução, um processo filho (_child process_) chamando o interpretador Python configurado, passando a URL do vídeo como argumento e a chave de API através de uma variável de ambiente, evitando que ela fique exposta em _logs_ ou na lista de processos do sistema operacional; e
 - Capturar a saída padrão (_stdout_) desse processo, contendo o resumo já formatado em Markdown, e criar uma nova nota no _vault_ com esse conteúdo.
 
-Já o script Python é responsável por:
+Já o _script_ Python é responsável por:
 + Extrair o identificador do vídeo a partir da URL fornecida;
 + Instanciar o agente (detalhado na próxima seção) e solicitar a ele o resumo do vídeo; e
-+ Imprimir o resultado em Markdown na saída padrão, para que o plugin possa capturá-lo.
++ Imprimir o resultado em Markdown na saída padrão, para que o _plugin_ possa capturá-lo.
 
 Essa separação permite que toda a lógica de inteligência artificial fique isolada em Python — linguagem com suporte mais maduro a _frameworks_ de agentes como o Agno — enquanto a integração com o Obsidian, que exige a API do próprio editor, é feita em TypeScript.
 
@@ -93,7 +93,7 @@ O agente foi implementado utilizando o _framework_ *Agno*, com o modelo *Gemini*
 
 - *get youtube video data*: retorna metadados do vídeo, como título, canal e duração, utilizados pelo agente para contextualizar o conteúdo;
 - *get youtube video captions*: tenta obter legendas do vídeo especificamente em inglês;
-- *video transcript*: busca a transcrição do vídeo em qualquer idioma disponível, servindo como alternativa quando não há legendas em inglês.
+- *video transcript*: busca a transcrição do vídeo em qualquer idioma disponível, servindo como alternativa quando não há legendas em inglês. Na implementação em questão foram utilizadas as seguintes linguagens: português, inglês, espanhol e francês.
 
 Esse desenho permite que o agente trate adequadamente vídeos em diferentes idiomas: quando há legendas em inglês, ele tende a priorizá-las; quando não há (como ocorreu em V2, V3 e V5), o agente recorre à _tool_ de transcrição geral, que retorna o conteúdo no idioma original do vídeo, traduzindo-o implicitamente durante o processo de sumarização.
 
@@ -224,11 +224,11 @@ A execução durou 10,4244 segundos e gastou um total de 4731 _tokens_, sem cont
 
 == Avaliação
 
-Os testes realizados com os cinco vídeos (V1 a V5) indicam que a ferramenta consegue gerar resumos coerentes e bem estruturados para conteúdos de naturezas distintas — de um vídeo curto sobre uma ferramenta de software (V1), passando por aulas mais longas e técnicas (V2 e V3), até vídeos de natureza mais subjetiva, como dicas de escrita criativa (V4) e um guia introdutório (V5).
+Os testes realizados com os cinco vídeos (V1 a V5) indicam que a ferramenta consegue gerar resumos coerentes e bem estruturados para conteúdos de naturezas distintas — de um vídeo curto sobre uma ferramenta de _software_ (V1), passando por aulas mais longas e técnicas (V2 e V3), até vídeos de natureza mais subjetiva, como dicas de escrita criativa (V4) e um guia introdutório (V5).
 
-Em todos os casos, o agente identificou corretamente os pontos centrais do vídeo e os organizou em tópicos claros, preservando termos técnicos relevantes (como comandos do Typst e do LaTeX, ou os nomes das camadas da Clean Architecture).
+Em todos os casos, o agente identificou corretamente os pontos centrais do vídeo e os organizou em tópicos claros, preservando termos técnicos relevantes (como comandos do Typst e do LaTeX, ou os nomes das camadas da _Clean Architecture_).
 
-Quanto ao desempenho, o tempo de execução variou entre aproximadamente 6 e 10,5 segundos, e o consumo de tokens ficou entre cerca de 1900 e 6200 por resumo, sem contar os tokens de _reasoning_. Houve uma tendência de maior consumo de tokens nos vídeos em que o agente precisou recorrer à transcrição em português (V2, V3 e V5), em comparação a V1, o único com legendas em inglês disponíveis — resultado esperado, já que transcrições mais longas ou que exigem tradução implícita durante a sumarização tendem a demandar mais tokens de entrada e de raciocínio.
+Quanto ao desempenho, o tempo de execução variou entre aproximadamente 6 e 10,5 segundos, e o consumo de _tokens_ ficou entre cerca de 1900 e 6200 por resumo, sem contar os _tokens_ de _reasoning_. Houve uma tendência de maior consumo de _tokens_ nos vídeos em que o agente precisou recorrer à transcrição em português (V2, V3 e V5), em comparação a V1, o único com legendas em inglês disponíveis — resultado esperado, já que transcrições mais longas ou que exigem tradução implícita durante a sumarização tendem a demandar mais _tokens_ de entrada e de raciocínio.
 
 De forma geral, a escolha dinâmica de _tools_ pelo agente mostrou-se adequada, evitando chamadas desnecessárias quando a primeira tentativa já não retornava o resultado esperado.
 
@@ -239,15 +239,15 @@ Apesar dos resultados satisfatórios, a ferramenta apresenta algumas limitaçõe
 - *Dependência de legendas/transcrições*: a ferramenta só funciona para vídeos que possuem transcrição disponível, seja gerada automaticamente pelo YouTube, seja enviada pelo criador do conteúdo.
 - *Dependência de uma biblioteca não oficial*: a obtenção das transcrições é feita através da biblioteca `youtube_transcript_api`, que não é um serviço oficial do YouTube. Mudanças internas na plataforma podem quebrar essa funcionalidade sem aviso prévio.
 - *Necessidade de um interpretador Python local*: como a lógica do agente roda em um processo Python separado, o usuário precisa ter o Python instalado (ou utilizar uma versão com as dependências empacotadas), o que dificulta a portabilidade entre diferentes sistemas operacionais e arquiteturas.
-- *Ausência de cache*: cada execução gera uma nova chamada ao modelo Gemini, mesmo que o mesmo vídeo já tenha sido resumido anteriormente, representando um gasto desnecessário de tokens.
+- *Ausência de _cache_*: cada execução gera uma nova chamada ao modelo Gemini, mesmo que o mesmo vídeo já tenha sido resumido anteriormente, representando um gasto desnecessário de _tokens_.
 
 == Conclusão
 
 // TODO: Retomar objetivo geral
 
-Este trabalho demonstrou a viabilidade de integrar agentes baseados em LLMs — utilizando o framework Agno e o modelo Gemini — a uma ferramenta de gestão de conhecimento amplamente utilizada, o Obsidian, com o objetivo de automatizar a criação de resumos de vídeos do YouTube. Os resultados obtidos nos cinco vídeos testados mostram que a ferramenta é capaz de gerar resumos relevantes e bem estruturados, mesmo diante de vídeos em idiomas diferentes e de naturezas variadas, graças à capacidade do agente de escolher dinamicamente quais ferramentas utilizar.
+Este trabalho demonstrou a viabilidade de integrar agentes baseados em LLMs — utilizando o _framework_ Agno e o modelo Gemini — a uma ferramenta de gestão de conhecimento amplamente utilizada, o Obsidian, com o objetivo de automatizar a criação de resumos de vídeos do YouTube. Os resultados obtidos nos cinco vídeos testados mostram que a ferramenta é capaz de gerar resumos relevantes e bem estruturados, mesmo diante de vídeos em idiomas diferentes e de naturezas variadas, graças à capacidade do agente de escolher dinamicamente quais ferramentas utilizar. Com base nos resultados obtidos, é possível afirmar que a proposta inicial foi atendida, e que a ferramenta tem potencial para ser útil em contextos educacionais e de estudo autodirigido.
 
-Como trabalhos futuros, destacam-se: a implementação de um mecanismo de cache para evitar resumos repetidos do mesmo vídeo; o empacotamento completo do ambiente Python, eliminando a dependência de uma instalação local e facilitando a distribuição da ferramenta; e a publicação oficial do plugin no repositório de plugins da comunidade do Obsidian, tornando-o acessível a um público mais amplo.
+Como trabalhos futuros, destacam-se: a implementação de um mecanismo de _cache_ para evitar resumos repetidos do mesmo vídeo; o empacotamento completo do ambiente Python, eliminando a dependência de uma instalação local e facilitando a distribuição da ferramenta; e a publicação oficial do _plugin_ no repositório de _plugins_ da comunidade do Obsidian, tornando-o acessível a um público mais amplo.
 
 = Referências Bibliográficas
 
