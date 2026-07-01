@@ -6,9 +6,9 @@
   author: "Breno Amâncio, Nicolas Botelho e Rafael Leão",
 )
 
-// TODO : Resumo
+No cenário tecnológico atual, o YouTube consolidou-se como uma vasta plataforma de conhecimento para o apoio a atividades de estudo. Paralelamente, observa-se a popularização de LLMs de uso geral, como ChatGPT, Gemini e DeepSeek. Este trabalho apresenta o desenvolvimento de uma ferramenta que integra essas duas vertentes, utilizando um agente baseado em LLM para gerar resumos textuais de vídeos do YouTube a partir de suas URLs. Para otimizar o fluxo de trabalho do usuário, a solução foi integrada ao ecossistema do Obsidian na forma de um _plugin_. Conclui-se que, apesar de limitações operacionais relacionadas à dependência do ecossistema Python e à qualidade de transcrições disponibilizadas pelo criador do vídeo ou pelo próprio YpuTube, a ferramenta demonstrou-se capaz de extrair e sintetizar conteúdos de forma relevante, potencializando o gerenciamento de conhecimento pessoal.
 
-*Palavras Chave*: // TODO
+*Palavras Chave*: LLM, _large language model_, YouTube, vídeo, agente, IA, inteligência artificial generativa, resumo.
 
 = Introdução
 
@@ -49,7 +49,7 @@ Um agente de IA é o fundamento da aplicação de IA em diversos cenários @llm_
 - Sensores: Mecanismos responsáveis captação dos sinais ou percepções;
 - Atuadores: Mecanismos responsáveis por realizar a ação decidida pelo agente no ambiente com base nos sinais captados pelos sensores.
 
-Além disso, também há o padrão ReAct (_reasoning and acting_) @react. Esse padrão consiste na sinergia de raciocínio da LLM, como foi o foco de Yao et al., com as suas ações. A ideia é se utilizar de raciocínio para apoiar a tomada de decisão da LLM (ação) atual e também em ações ou raciocínios futuros. Algumas vantagens desse padrão são:
+Além disso, também há o padrão ReAct (_reasoning and acting_) @react. Esse padrão consiste na sinergia de raciocínio da LLM, como foi o foco de Yao _et al._, com as suas ações. A ideia é se utilizar de raciocínio para apoiar a tomada de decisão da LLM (ação) atual e também em ações ou raciocínios futuros. Algumas vantagens desse padrão são:
 - Os _prompts_ dentro desse padrão são fáceis de construir e intuitivos;
 - O padrão é flexível e abrangente, podendo ser aplicado em diversos cenários;
 - O padrão é robusto, ao mesmo tempo que é performático; e
@@ -63,9 +63,26 @@ Agno #footnote("https://docs.agno.com/"), é um _Software Develoment Kit_ (SDK) 
 
 Outra vantagem do Agno é o SDK oferece suporte para o padrão ReAct através de algumas ferramentas como _think_ e _reasoning_.
 
-== Trabalhos Relacionados
+== Trabalhos Correlatos
 
-// TODO
+=== Resumo de vídeos do YouTube com o LLM
+
+Em alguns vídeos no YouTube, a plataforma disponibiliza um curto resumo do vídeo abordando a temática do vídeo #footnote("https://support.google.com/youtube/answer/14089423"). Esse resumo foca em complementar a descrição do vídeo e traz uma visão geral do vídeo.
+
+=== Eightify
+
+Eightify #footnote("https://eightify.app/") é um _plugin_ para o Google Chrome que gera resumos de vídeos do YouTube utilizando IA em uma interface no próprio navegador. Ele é focado em gerar resumos estruturados de vídeos em diversos formatos e idiomas, podendo ser configurado para uma opção especifica.
+
+O _plugin_ oferece as seguintes gerações:
+- Resumo focado nos tópicos principais;
+- Resumo com _timestamps_;
+- Resumo dos principais comentários; e
+- Transcrição do vídeo.
+
+=== Trabalho atual
+
+Esse trabalho se propõe a gerar resumos estruturados de vídeo, similar ao resumo focado nos tópicos principais do Eightify. Porém, além disso, a ferramenta proposta nesse trabalho atua de forma integrada ao Obsidian, gerando seus resumos de forma a ser lida pelo editor de notas.
+Para além disso, esse trabalho visa explorar uma das formas de gerar resumos de vídeos, já que, ambas ferramentas citadas anteriormente — A ferramenta experimental do YouTube e o Eightify — são de código fechado.
 
 = Arquitetura
 
@@ -248,8 +265,6 @@ Apesar dos resultados satisfatórios, a ferramenta apresenta algumas limitaçõe
 Este trabalho demonstrou a viabilidade de integrar agentes baseados em LLMs — utilizando o framework Agno e o modelo Gemini — a uma ferramenta de gestão de conhecimento amplamente utilizada, o Obsidian, com o objetivo de automatizar a criação de resumos de vídeos do YouTube. Os resultados obtidos nos cinco vídeos testados mostram que a ferramenta é capaz de gerar resumos relevantes e bem estruturados, mesmo diante de vídeos em idiomas diferentes e de naturezas variadas, graças à capacidade do agente de escolher dinamicamente quais ferramentas utilizar.
 
 Como trabalhos futuros, destacam-se: a implementação de um mecanismo de cache para evitar resumos repetidos do mesmo vídeo; o empacotamento completo do ambiente Python, eliminando a dependência de uma instalação local e facilitando a distribuição da ferramenta; e a publicação oficial do plugin no repositório de plugins da comunidade do Obsidian, tornando-o acessível a um público mais amplo.
-
-= Referências Bibliográficas
 
 #bibliography("references.bib", full: true, style: "associacao-brasileira-de-normas-tecnicas")
 
