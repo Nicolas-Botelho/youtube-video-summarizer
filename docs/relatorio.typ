@@ -45,9 +45,9 @@ Finalmente, a seção 5 faz uma avaliação dos resultados obtidos, traçando as
 == Agentes de IA
 
 Um agente de IA é o fundamento da aplicação de IA em diversos cenários @llm_agent_in_se. Um agente de IA é dividido em 3 partes principais @ai_modern_approach:
-- Percepções: Sinais que chegam do ambiente;
-- Sensores: Mecanismos responsáveis captação dos sinais ou percepções;
-- Atuadores: Mecanismos responsáveis por realizar a ação decidida pelo agente no ambiente com base nos sinais captados pelos sensores.
+- *Percepções*: Sinais que chegam do ambiente;
+- *Sensores*: Mecanismos responsáveis captação dos sinais ou percepções;
+- *Atuadores*: Mecanismos responsáveis por realizar a ação decidida pelo agente no ambiente com base nos sinais captados pelos sensores.
 
 Além disso, também há o padrão _Reasoning and Acting_ (ReAct) @react. Esse padrão consiste na sinergia de raciocínio da LLM, como foi o foco de Yao et al., com as suas ações. A ideia é se utilizar de raciocínio para apoiar a tomada de decisão da LLM (ação) atual e também em ações ou raciocínios futuros. Algumas vantagens desse padrão são:
 - Os _prompts_ dentro desse padrão são fáceis de construir e intuitivos;
@@ -88,7 +88,7 @@ Para além disso, esse trabalho visa explorar uma das formas de gerar resumos de
 
 == Arquitetura da ferramenta
 
-A ferramenta foi dividida em duas camadas que se comunicam por meio de um processo filho: um *_plugin_ do Obsidian*, escrito em TypeScript, responsável pela interface com o usuário, e um *_script_ em Python*, responsável por toda a lógica de obtenção da transcrição e geração do resumo.
+A ferramenta foi dividida em duas camadas que se comunicam por meio de um processo filho: um _plugin_ do Obsidian, escrito em TypeScript, responsável pela interface com o usuário, e um _script_ em Python, responsável por toda a lógica de obtenção da transcrição e geração do resumo.
 
 O _plugin_ Obsidian é responsável por:
 - Detectar, no primeiro uso, se o usuário já possui uma chave de _Application Programming Interface_ (API) do Gemini configurada e, caso não possua, solicitá-la através de uma janela modal, com um _link_ direto para o Google AI Studio;
@@ -106,11 +106,11 @@ Essa separação permite que toda a lógica de inteligência artificial fique is
 
 == Arquitetura do agente
 
-O agente foi implementado utilizando o _framework_ *Agno*, com o modelo *Gemini* (Google) como modelo de linguagem subjacente. Em vez de seguir um fluxo fixo, o agente recebe um conjunto de _tools_ e decide autonomamente quais delas utilizar, e em que ordem, para obter as informações necessárias antes de gerar o resumo. As _tools_ disponibilizadas ao agente foram:
+O agente foi implementado utilizando o _framework_ Agno, com o modelo Gemini (Google) como modelo de linguagem subjacente. Em vez de seguir um fluxo fixo, o agente recebe um conjunto de _tools_ e decide autonomamente quais delas utilizar, e em que ordem, para obter as informações necessárias antes de gerar o resumo. As _tools_ disponibilizadas ao agente foram:
 
-- *get youtube video data*: retorna metadados do vídeo, como título, canal e duração, utilizados pelo agente para contextualizar o conteúdo;
-- *get youtube video captions*: tenta obter legendas do vídeo especificamente em inglês;
-- *video transcript*: busca a transcrição do vídeo em qualquer idioma disponível, servindo como alternativa quando não há legendas em inglês. Na implementação em questão foram utilizadas as seguintes linguagens: português, inglês, espanhol e francês.
+- *_get youtube video data_*: retorna metadados do vídeo, como título, canal e duração, utilizados pelo agente para contextualizar o conteúdo;
+- *_get youtube video captions_*: tenta obter legendas do vídeo especificamente em inglês;
+- *_video transcript_*: busca a transcrição do vídeo em qualquer idioma disponível, servindo como alternativa quando não há legendas em inglês. Na implementação em questão foram utilizadas as seguintes linguagens: português, inglês, espanhol e francês.
 
 Esse desenho permite que o agente trate adequadamente vídeos em diferentes idiomas: quando há legendas em inglês, ele tende a priorizá-las; quando não há (como ocorreu em V2, V3 e V5), o agente recorre à _tool_ de transcrição geral, que retorna o conteúdo no idioma original do vídeo, traduzindo-o implicitamente durante o processo de sumarização.
 
@@ -259,8 +259,6 @@ Apesar dos resultados satisfatórios, a ferramenta apresenta algumas limitaçõe
 - *Ausência de _cache_*: cada execução gera uma nova chamada ao modelo Gemini, mesmo que o mesmo vídeo já tenha sido resumido anteriormente, representando um gasto desnecessário de _tokens_.
 
 == Conclusão
-
-// TODO: Retomar objetivo geral
 
 Este trabalho demonstrou a viabilidade de integrar agentes baseados em LLMs — utilizando o _framework_ Agno e o modelo Gemini — a uma ferramenta de gestão de conhecimento amplamente utilizada, o Obsidian, com o objetivo de automatizar a criação de resumos de vídeos do YouTube. Os resultados obtidos nos cinco vídeos testados mostram que a ferramenta é capaz de gerar resumos relevantes e bem estruturados, mesmo diante de vídeos em idiomas diferentes e de naturezas variadas, graças à capacidade do agente de escolher dinamicamente quais ferramentas utilizar. Com base nos resultados obtidos, é possível afirmar que a proposta inicial foi atendida, e que a ferramenta tem potencial para ser útil em contextos educacionais e de estudo autodirigido.
 
