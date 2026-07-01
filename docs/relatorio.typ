@@ -1,5 +1,6 @@
 #import "IFES-DOC/ifes-doc.typ": *
 #show: setup.with(
+  
   title: "Resumo de Vídeos do YouTube no Obsidian",
   subtitle: "Relatório do Trabalho",
   course: "Inteligência Artificial",
@@ -24,13 +25,33 @@ Pensando nisso, e também no cenário de popularização de _Large Language Mode
 
 == Arquitetura da ferramenta
 
-// TODO
-// organização da ferramenta (exemplo: plugin do obsidian que chama um script python)
+A ferramenta foi dividida em duas camadas que se comunicam por meio de um processo filho: um *plugin do Obsidian*, escrito em TypeScript, responsável pela interface com o usuário, e um *script em Python*, responsável por toda a lógica de obtenção da transcrição e geração do resumo.
+
+O plugin Obsidian é responsável por:
+- Detectar, no primeiro uso, se o usuário já possui uma chave de API do Gemini configurada e, caso não possua, solicitá-la através de uma janela modal, com um link direto para o Google AI Studio;
+- Armazenar essa chave localmente, junto aos dados do plugin dentro do _vault_ do usuário;
+- Expor um comando ("Summarize YouTube video") que abre uma janela para o usuário inserir a URL do vídeo desejado;
+- Disparar, a cada execução, um processo filho (_child process_) chamando o interpretador Python configurado, passando a URL do vídeo como argumento e a chave de API através de uma variável de ambiente, evitando que ela fique exposta em logs ou na lista de processos do sistema operacional;
+- Capturar a saída padrão (_stdout_) desse processo, contendo o resumo já formatado em Markdown, e criar uma nova nota no _vault_ com esse conteúdo.
+
+Já o script Python é responsável por:
++ Extrair o identificador do vídeo a partir da URL fornecida;
++ Instanciar o agente (detalhado na próxima seção) e solicitar a ele o resumo do vídeo;
++ Imprimir o resultado em Markdown na saída padrão, para que o plugin possa capturá-lo.
+
+Essa separação permite que toda a lógica de inteligência artificial fique isolada em Python — linguagem com suporte mais maduro a frameworks de agentes como o Agno — enquanto a integração com o Obsidian, que exige a API do próprio editor, é feita em TypeScript.
 
 == Arquitetura do agente
 
-// TODO
-// agente e as tools usadas
+O agente foi implementado utilizando o framework *Agno*, com o modelo *Gemini* (Google) como modelo de linguagem subjacente. Em vez de seguir um fluxo fixo, o agente recebe um conjunto de _tools_ e decide autonomamente quais delas utilizar, e em que ordem, para obter as informações necessárias antes de gerar o resumo. As _tools_ disponibilizadas ao agente foram:
+
+- *get youtube video data*: retorna metadados do vídeo, como título, canal e duração, utilizados pelo agente para contextualizar o conteúdo;
+- *get youtube video captions*: tenta obter legendas do vídeo especificamente em inglês;
+- *video transcript*: busca a transcrição do vídeo em qualquer idioma disponível, servindo como alternativa quando não há legendas em inglês.
+
+Esse desenho permite que o agente trate adequadamente vídeos em diferentes idiomas: quando há legendas em inglês, ele tende a priorizá-las; quando não há (como ocorreu em V2, V3 e V5), o agente recorre à _tool_ de transcrição geral, que retorna o conteúdo no idioma original do vídeo, traduzindo-o implicitamente durante o processo de sumarização.
+
+Após reunir as informações necessárias através das _tools_, o agente sintetiza um resumo estruturado em Markdown, dividido em tópicos, pronto para ser inserido como nota no Obsidian.
 
 = Resultados Obtidos
 
@@ -131,15 +152,28 @@ A execução durou 10,4244 segundos e gastou um total de 4731 _tokens_, sem cont
 
 == Avaliação
 
-// TODO
+Os testes realizados com os cinco vídeos (V1 a V5) indicam que a ferramenta consegue gerar resumos coerentes e bem estruturados para conteúdos de naturezas distintas — de um vídeo curto sobre uma ferramenta de software (V1), passando por aulas mais longas e técnicas (V2 e V3), até vídeos de natureza mais subjetiva, como dicas de escrita criativa (V4) e um guia introdutório (V5).
+
+Em todos os casos, o agente identificou corretamente os pontos centrais do vídeo e os organizou em tópicos claros, preservando termos técnicos relevantes (como comandos do Typst e do LaTeX, ou os nomes das camadas da Clean Architecture).
+
+Quanto ao desempenho, o tempo de execução variou entre aproximadamente 6 e 10,5 segundos, e o consumo de tokens ficou entre cerca de 1900 e 6200 por resumo, sem contar os tokens de _reasoning_. Houve uma tendência de maior consumo de tokens nos vídeos em que o agente precisou recorrer à transcrição em português (V2, V3 e V5), em comparação a V1, o único com legendas em inglês disponíveis — resultado esperado, já que transcrições mais longas ou que exigem tradução implícita durante a sumarização tendem a demandar mais tokens de entrada e de raciocínio.
+
+De forma geral, a escolha dinâmica de _tools_ pelo agente mostrou-se adequada, evitando chamadas desnecessárias quando a primeira tentativa já não retornava o resultado esperado.
 
 == Limitações
 
-// TODO
+Apesar dos resultados satisfatórios, a ferramenta apresenta algumas limitações:
+
+- *Dependência de legendas/transcrições*: a ferramenta só funciona para vídeos que possuem transcrição disponível, seja gerada automaticamente pelo YouTube, seja enviada pelo criador do conteúdo.
+- *Dependência de uma biblioteca não oficial*: a obtenção das transcrições é feita através da biblioteca `youtube_transcript_api`, que não é um serviço oficial do YouTube. Mudanças internas na plataforma podem quebrar essa funcionalidade sem aviso prévio.
+- *Necessidade de um interpretador Python local*: como a lógica do agente roda em um processo Python separado, o usuário precisa ter o Python instalado (ou utilizar uma versão com as dependências empacotadas), o que dificulta a portabilidade entre diferentes sistemas operacionais e arquiteturas.
+- *Ausência de cache*: cada execução gera uma nova chamada ao modelo Gemini, mesmo que o mesmo vídeo já tenha sido resumido anteriormente, representando um gasto desnecessário de tokens.
 
 == Conclusão
 
-// TODO
+Este trabalho demonstrou a viabilidade de integrar agentes baseados em LLMs — utilizando o framework Agno e o modelo Gemini — a uma ferramenta de gestão de conhecimento amplamente utilizada, o Obsidian, com o objetivo de automatizar a criação de resumos de vídeos do YouTube. Os resultados obtidos nos cinco vídeos testados mostram que a ferramenta é capaz de gerar resumos relevantes e bem estruturados, mesmo diante de vídeos em idiomas diferentes e de naturezas variadas, graças à capacidade do agente de escolher dinamicamente quais ferramentas utilizar.
+
+Como trabalhos futuros, destacam-se: a implementação de um mecanismo de cache para evitar resumos repetidos do mesmo vídeo; o empacotamento completo do ambiente Python, eliminando a dependência de uma instalação local e facilitando a distribuição da ferramenta; e a publicação oficial do plugin no repositório de plugins da comunidade do Obsidian, tornando-o acessível a um público mais amplo.
 
 #pagebreak()
 #set heading(numbering: "A.1")

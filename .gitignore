@@ -1,13 +1,20 @@
 # config
 bin
+node_modules
+vendor
 lib*
 CACHEDIR.TAG
 pyvenv.cfg
 .lock
 .venv
+.direnv
 
 # cache
 __pycache__*
 
 # env
 .env
+
+# nix
+.envrc
+shell.nix

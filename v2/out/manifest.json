@@ -1,0 +1,9 @@
+{
+	"id": "yt-summarizer",
+	"name": "YouTube Summarizer",
+	"version": "0.1.0",
+	"minAppVersion": "1.4.0",
+	"description": "Summarize a YouTube video's transcript into a new note using Gemini.",
+	"author": "Equipe de IA",
+	"isDesktopOnly": true
+}
