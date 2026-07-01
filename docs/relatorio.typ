@@ -1,25 +1,71 @@
 #import "IFES-DOC/ifes-doc.typ": *
 #show: setup.with(
-  
   title: "Resumo de Vídeos do YouTube no Obsidian",
   subtitle: "Relatório do Trabalho",
   course: "Inteligência Artificial",
   author: "Breno Amâncio, Nicolas Botelho e Rafael Leão",
 )
 
+// TODO : Resumo
+
+*Palavras Chave*: // TODO
+
 = Introdução
 
 == Motivação
 
-Atualmente, o YouTube é uma plataforma muito útil para apoio ao estudo e a obtenção de informações e conhecimento. Por exemplo, existem diversos canais focados para o ensino de diversos conteúdos em níveis variados de complexidade, como #link("https://www.youtube.com/@MatematicaRio", "Prof. Rafael Procópio"), focado em matemática, e #link("https://www.youtube.com/@josecarlosmacoratti", "José Carlos Macoratti"), focado em programação, principalmente .NET e C\#. Assim, se usado corretamente, o YouTube pode ser uma ferramenta importante na forma de estudo contemporânea.
+Atualmente, o YouTube é uma plataforma muito útil para apoio ao estudo e a obtenção de informações e conhecimento. Por exemplo, existem diversos canais focados para o ensino de diversos conteúdos em níveis variados de complexidade, como Prof. Rafael Procópio #footnote(link("https://www.youtube.com/@MatematicaRio")), focado em matemática, e José Carlos Macoratti #footnote(link("https://www.youtube.com/@josecarlosmacoratti")), focado em programação, principalmente .NET e C\#. Assim, se usado corretamente, o YouTube pode ser uma ferramenta importante na forma de estudo contemporânea.
+
+Além disso, há uma popularização de _Large Language Models_ (LLMs), como ChatGPT @gpt3, Gemini @gemini e DeepSeek @deepseek. Nesse aspecto, há uma grande gama de novas possibilidades em diversas áreas @gai, como na educação científica @gai_education. Uma das formas de se utilizar LLMs de uso geral, é através da especialização delas em tarefas específicas, por exemplo, atribuindo uma função específica @role_play_prompt para o agente baseado em LLM @llm_agent_in_se.
 
 == Problema
 
 Nesse cenário, existe uma gama muito ampla de informações disponíveis, então, nem sempre é possível ir a fundo em todas elas. Além disso nem todas as fontes de informação são, de fato, relevantes em seu conteúdo.
 
+== Objetivo Geral
+
+Desenvolver uma ferramenta que seja capaz de resumir vídeos do YouTube dada a URL do vídeo para ajudar na compreensão do conteúdo do mesmo a partir do resumo criado.
+
 == Proposta
 
-Pensando nisso, e também no cenário de popularização de _Large Language Models_ (LLMs), como Gemini, ChatGPT e Claude, esse trabalho propõe uma ferramenta que usa um agente baseados em LLM, nesse caso, utilizando Agno e Gemini, para gerar resumos de vídeos do YouTube através de sua URL e colocar esses resumos no #link("https://obsidian.md/", "Obsidian"), uma ferramenta gratuita e _offline_ de escrita de notas e gestão de conhecimento através dos _plugins_ do próprio Obsidian.
+Pensando nisso, esse trabalho propõe uma ferramenta que usa um agente baseados em LLM, nesse caso, utilizando Agno e Gemini, para gerar resumos de vídeos do YouTube através de sua URL e colocar esses resumos no Obsidian #footnote(link("https://obsidian.md/")), uma ferramenta gratuita e _offline_ de escrita de notas e gestão de conhecimento através dos _plugins_ do próprio Obsidian.
+
+== Organização do Relatório
+
+A seção 2 traça uma explicação geral sobre agentes de IA e o uso do _framework_ Agno. Além disso, ela aborda alguns trabalhos similares a esse desenvolvidos anteriormente.
+
+A seção 3 explica a arquitetura da ferramenta criada, assim como a arquitetura do agente dela. Por fim, a seção também explicita o _prompt_ do agente.
+
+A seção 4 fala dos resultados obtidos e do comportamento do agente nos testes realizados.
+
+Finalmente, a seção 5 faz uma avaliação dos resultados obtidos, traçando as limitações do trabalho atual, assim como possíveis trabalhos futuros baseados nelas.
+
+= Fundamentação Teórica
+
+== Agentes de IA
+
+Um agente de IA é o fundamento da aplicação de IA em diversos cenários @llm_agent_in_se. Um agente de IA é dividido em 3 partes principais @ai_modern_approach:
+- Percepções: Sinais que chegam do ambiente;
+- Sensores: Mecanismos responsáveis captação dos sinais ou percepções;
+- Atuadores: Mecanismos responsáveis por realizar a ação decidida pelo agente no ambiente com base nos sinais captados pelos sensores.
+
+Além disso, também há o padrão ReAct (_reasoning and acting_) @react. Esse padrão consiste na sinergia de raciocínio da LLM, como foi o foco de Yao et al., com as suas ações. A ideia é se utilizar de raciocínio para apoiar a tomada de decisão da LLM (ação) atual e também em ações ou raciocínios futuros. Algumas vantagens desse padrão são:
+- Os _prompts_ dentro desse padrão são fáceis de construir e intuitivos;
+- O padrão é flexível e abrangente, podendo ser aplicado em diversos cenários;
+- O padrão é robusto, ao mesmo tempo que é performático; e
+- O padrão permite que o agente possa ser facilmente avaliado e ajustado por humanos.
+
+Nesse cenário, uma distinção importate é a diferença entre um _chatbot_ e um agente de IA. De forma geral, a diferença se dá no fato de que um _chatbot_ simplesmente executa _scripts_ e _queries_ predefinidas, sendo muito eficientes dentro desse conjunto de atividades, porém tendo dificuldades em lidar com situações mais complexas. Já um agente de IA baseado em LLM, extrapola as funções de um _chatbot_, podendo lidar tanto com cenários simples, quanto com os mais complexos, quando utiliza ferramentas (chamadas de _tools_) e _frameworks_ de raciocínio @chatbot_vs_agent.
+
+== Agno
+
+Agno #footnote("https://docs.agno.com/"), é um _Software Develoment Kit_ (SDK) especializado na criação de agentes de IA, de times multi-agentes e de _workflows_ de agentes. As principais vantagens relatadas na documentação dele são a facilidade de uso, podendo ser usado apenas Python, e a versatilidade, a partir das capacidades, como memória, modelos suportados e variedade de ferramentas.
+
+Outra vantagem do Agno é o SDK oferece suporte para o padrão ReAct através de algumas ferramentas como _think_ e _reasoning_.
+
+== Trabalhos Relacionados
+
+// TODO
 
 = Arquitetura
 
@@ -28,22 +74,22 @@ Pensando nisso, e também no cenário de popularização de _Large Language Mode
 A ferramenta foi dividida em duas camadas que se comunicam por meio de um processo filho: um *plugin do Obsidian*, escrito em TypeScript, responsável pela interface com o usuário, e um *script em Python*, responsável por toda a lógica de obtenção da transcrição e geração do resumo.
 
 O plugin Obsidian é responsável por:
-- Detectar, no primeiro uso, se o usuário já possui uma chave de API do Gemini configurada e, caso não possua, solicitá-la através de uma janela modal, com um link direto para o Google AI Studio;
+- Detectar, no primeiro uso, se o usuário já possui uma chave de API do Gemini configurada e, caso não possua, solicitá-la através de uma janela modal, com um _link_ direto para o Google AI Studio;
 - Armazenar essa chave localmente, junto aos dados do plugin dentro do _vault_ do usuário;
-- Expor um comando ("Summarize YouTube video") que abre uma janela para o usuário inserir a URL do vídeo desejado;
-- Disparar, a cada execução, um processo filho (_child process_) chamando o interpretador Python configurado, passando a URL do vídeo como argumento e a chave de API através de uma variável de ambiente, evitando que ela fique exposta em logs ou na lista de processos do sistema operacional;
+- Expor um comando ("_Summarize YouTube video_") que abre uma janela para o usuário inserir a URL do vídeo desejado;
+- Disparar, a cada execução, um processo filho (_child process_) chamando o interpretador Python configurado, passando a URL do vídeo como argumento e a chave de API através de uma variável de ambiente, evitando que ela fique exposta em logs ou na lista de processos do sistema operacional; e
 - Capturar a saída padrão (_stdout_) desse processo, contendo o resumo já formatado em Markdown, e criar uma nova nota no _vault_ com esse conteúdo.
 
 Já o script Python é responsável por:
 + Extrair o identificador do vídeo a partir da URL fornecida;
-+ Instanciar o agente (detalhado na próxima seção) e solicitar a ele o resumo do vídeo;
++ Instanciar o agente (detalhado na próxima seção) e solicitar a ele o resumo do vídeo; e
 + Imprimir o resultado em Markdown na saída padrão, para que o plugin possa capturá-lo.
 
-Essa separação permite que toda a lógica de inteligência artificial fique isolada em Python — linguagem com suporte mais maduro a frameworks de agentes como o Agno — enquanto a integração com o Obsidian, que exige a API do próprio editor, é feita em TypeScript.
+Essa separação permite que toda a lógica de inteligência artificial fique isolada em Python — linguagem com suporte mais maduro a _frameworks_ de agentes como o Agno — enquanto a integração com o Obsidian, que exige a API do próprio editor, é feita em TypeScript.
 
 == Arquitetura do agente
 
-O agente foi implementado utilizando o framework *Agno*, com o modelo *Gemini* (Google) como modelo de linguagem subjacente. Em vez de seguir um fluxo fixo, o agente recebe um conjunto de _tools_ e decide autonomamente quais delas utilizar, e em que ordem, para obter as informações necessárias antes de gerar o resumo. As _tools_ disponibilizadas ao agente foram:
+O agente foi implementado utilizando o _framework_ *Agno*, com o modelo *Gemini* (Google) como modelo de linguagem subjacente. Em vez de seguir um fluxo fixo, o agente recebe um conjunto de _tools_ e decide autonomamente quais delas utilizar, e em que ordem, para obter as informações necessárias antes de gerar o resumo. As _tools_ disponibilizadas ao agente foram:
 
 - *get youtube video data*: retorna metadados do vídeo, como título, canal e duração, utilizados pelo agente para contextualizar o conteúdo;
 - *get youtube video captions*: tenta obter legendas do vídeo especificamente em inglês;
@@ -52,6 +98,20 @@ O agente foi implementado utilizando o framework *Agno*, com o modelo *Gemini* (
 Esse desenho permite que o agente trate adequadamente vídeos em diferentes idiomas: quando há legendas em inglês, ele tende a priorizá-las; quando não há (como ocorreu em V2, V3 e V5), o agente recorre à _tool_ de transcrição geral, que retorna o conteúdo no idioma original do vídeo, traduzindo-o implicitamente durante o processo de sumarização.
 
 Após reunir as informações necessárias através das _tools_, o agente sintetiza um resumo estruturado em Markdown, dividido em tópicos, pronto para ser inserido como nota no Obsidian.
+
+== Prompt Usado
+
+```md
+# Task
+You are a video summarizer especialist.
+You are tasked with summarizing the video below focusing on its context and main points.
+# Instructions
+- Answer in english only
+- Answer with text only
+- Make your answer in topics, following the main points of the video
+- The first topic must be a introduction to the general context of the video and the last topic must a conclusion
+- If you can not use the Youtube Tool in any meaningful way, use the video transcript tool
+```
 
 = Resultados Obtidos
 
@@ -65,8 +125,15 @@ Para os testes realizados, foram utilizados os vídeos na tabela abaixo. Para si
     ("V3", ".NET - Apresentando Clean Architecture", link("https://youtu.be/ZWfrI5Bu6so?si=Dow0uoeX7YMOE08T")),
     ("V4", "Five Tips for Writing Your First Novel", link("https://youtu.be/mMeNnX1FGgg?si=aL2_-HbUVE3urgHW")),
     ("V5", "LaTeX for Students – A Simple Quickstart Guide", link("https://youtu.be/lgiCpA4zzGU?si=yd-frPVgAcIDaQcX")),
-  )
+  ),
 )
+
+// TODO : Incluir mais exemplos (+5) com vídeos mais difíceis de resumir (músicas, vídeos sem objetivos claros, vídeos longos, etc)
+
+// TODO : Definir o que é um resumo correto (resultado esperado)
+
+// TODO : Para cada vídeo: resultado dado X resultado experado
+// TODO : Para cada vídeo: trace da ferramenta: entrada -> chamadas de tool -> saída
 
 == Resultados para V1
 
@@ -82,7 +149,8 @@ A execução durou 6,0212 segundos e gastou um total de 1936 _tokens_, sem conta
   headers: ("Input tokens", "Output tokens", "Total tokens", "Reasoning tokens"),
   rows: (
     ("1376", "560", "1936", "458")
-  ))
+  ),
+)
 
 == Resultados para V2
 
@@ -98,7 +166,8 @@ A execução durou 6,1789 segundos e gastou um total de 6170 _tokens_, sem conta
   headers: ("Input tokens", "Output tokens", "Total tokens", "Reasoning tokens"),
   rows: (
     ("5545", "625", "6170", "363")
-  ))
+  ),
+)
 
 == Resultados para V3
 
@@ -114,7 +183,8 @@ A execução durou 7,7084 segundos e gastou um total de 4824 _tokens_, sem conta
   headers: ("Input tokens", "Output tokens", "Total tokens", "Reasoning tokens"),
   rows: (
     ("3912", "912", "4824", "444")
-  ))
+  ),
+)
 
 == Resultados para V4
 
@@ -130,7 +200,8 @@ A execução durou 10,5473 segundos e gastou um total de 4747 _tokens_, sem cont
   headers: ("Input tokens", "Output tokens", "Total tokens", "Reasoning tokens"),
   rows: (
     ("3841", "906", "4747", "991")
-  ))
+  ),
+)
 
 == Resultados para V5
 
@@ -146,9 +217,10 @@ A execução durou 10,4244 segundos e gastou um total de 4731 _tokens_, sem cont
   headers: ("Input tokens", "Output tokens", "Total tokens", "Reasoning tokens"),
   rows: (
     ("3696", "1035", "4731", "860")
-  ))
+  ),
+)
 
-= Conclusão
+= Considerações Finais
 
 == Avaliação
 
@@ -171,22 +243,141 @@ Apesar dos resultados satisfatórios, a ferramenta apresenta algumas limitaçõe
 
 == Conclusão
 
+// TODO: Retomar objetivo geral
+
 Este trabalho demonstrou a viabilidade de integrar agentes baseados em LLMs — utilizando o framework Agno e o modelo Gemini — a uma ferramenta de gestão de conhecimento amplamente utilizada, o Obsidian, com o objetivo de automatizar a criação de resumos de vídeos do YouTube. Os resultados obtidos nos cinco vídeos testados mostram que a ferramenta é capaz de gerar resumos relevantes e bem estruturados, mesmo diante de vídeos em idiomas diferentes e de naturezas variadas, graças à capacidade do agente de escolher dinamicamente quais ferramentas utilizar.
 
 Como trabalhos futuros, destacam-se: a implementação de um mecanismo de cache para evitar resumos repetidos do mesmo vídeo; o empacotamento completo do ambiente Python, eliminando a dependência de uma instalação local e facilitando a distribuição da ferramenta; e a publicação oficial do plugin no repositório de plugins da comunidade do Obsidian, tornando-o acessível a um público mais amplo.
+
+= Referências Bibliográficas
+
+#bibliography("references.bib", full: true, style: "associacao-brasileira-de-normas-tecnicas")
 
 #pagebreak()
 #set heading(numbering: "A.1")
 #counter(heading).update(0)
 
-= Apêndice A
+= Apêndice A: Código do agente
+
+```py
+#!/usr/bin/env python3
+"""
+Summarizes a YouTube video using an agno Agent equipped with YouTubeTools and
+a transcript-fallback tool, exactly like the original FastAPI prototype —
+just wrapped as a CLI so the Obsidian plugin can call it as a subprocess.
+
+Usage:
+    GEMINI_API_KEY=xxxx python summarize.py "https://www.youtube.com/watch?v=VIDEO_ID"
+
+Prints the markdown summary to stdout. All diagnostic/error output goes to
+stderr so the caller (the Obsidian plugin) can cleanly separate the two.
+"""
+
+import argparse
+import os
+import re
+import sys
+
+# Make the bundled "vendor" folder (pip-installed packages shipped alongside
+# this script) importable, taking priority over anything installed system-wide.
+_VENDOR_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "vendor")
+if os.path.isdir(_VENDOR_DIR) and _VENDOR_DIR not in sys.path:
+    sys.path.insert(0, _VENDOR_DIR)
+
+from agno.agent import Agent
+from agno.tools.youtube import YouTubeTools
+from youtube_transcript_api import YouTubeTranscriptApi
+
+
+def get_youtube_id(url: str):
+    pattern = r'(?:v=|\/shorts\/|\/embed\/|\/v\/|youtu\.be\/)([a-zA-Z0-9_-]{11})'
+    match = re.search(pattern, url)
+    return match.group(1) if match else None
+
+
+def video_transcript(url: str) -> str:
+    """
+    Args:
+      url: youtube video url
+    Returns:
+      transcript: given url video transcript
+    """
+    yta = YouTubeTranscriptApi()
+    transcript = ""
+    try:
+        fetched = yta.fetch(get_youtube_id(url), languages=['pt', 'en', 'sp', 'fr'])
+        for snippet in fetched:
+            transcript += snippet.text + "\n"
+    except Exception:
+        transcript = "no transcript"
+
+    return transcript
+
+
+SUMMARIZER_PROMPT = """
+# Task
+You are a video summarizer especialist.
+You are tasked with summarizing the video below focusing on its context and main points.
+# Instructions
+- Answer in english only
+- Answer with text only
+- Make your answer in topics, following the main points of the video
+- The first topic must be a introduction to the general context of the video and the last topic must a conclusion
+- If you can not use the Youtube Tool in any meaningful way, use the video transcript tool
+"""
+
+
+def summarize(video_url: str) -> str:
+    summarizer_agent = Agent(
+        name="summarizer_agent",
+        model="google:gemini-2.5-flash",
+        tools=[YouTubeTools(), video_transcript],
+        instructions=SUMMARIZER_PROMPT,
+        markdown=True,
+        telemetry=True,
+    )
+    response = summarizer_agent.run('# Video URL\n' + video_url)
+    return response.content
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Summarize a YouTube video with an agno agent.")
+    parser.add_argument("url", help="YouTube video URL")
+    args = parser.parse_args()
+
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        print("GEMINI_API_KEY environment variable not set.", file=sys.stderr)
+        sys.exit(2)
+
+    # agno's "google:<model-id>" shorthand reads the key from GOOGLE_API_KEY,
+    # so map the plugin's single GEMINI_API_KEY setting onto it here.
+    os.environ.setdefault("GOOGLE_API_KEY", api_key)
+
+    try:
+        summary_md = summarize(args.url)
+        if not summary_md or not summary_md.strip():
+            print("Agent returned an empty response.", file=sys.stderr)
+            sys.exit(3)
+    except Exception as e:  # noqa: BLE001 - we want a clean one-line failure for the plugin
+        print(f"ERROR: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    print(summary_md)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+= Apêndice B: Resumos gerados para os vídeos utilizados
 
 == Resumo de V1 <resumo-v1>
 ```md
-Here is a summary of the video about Typst:                               
+Here is a summary of the video about Typst:
 
 *   **Introduction to Typst:**
-This video is a fast-paced, "Fireship tribute" style introduction to Typst, a modern, blazingly fast, and Rust-based typesetting language. It was developed in 2019 by German university students seeking an alternative to LaTeX due to its awkward syntax and slow compilation speeds. Typst aims to provide a more efficient and user-friendly experience for creating     documents.                                                                
+This video is a fast-paced, "Fireship tribute" style introduction to Typst, a modern, blazingly fast, and Rust-based typesetting language. It was developed in 2019 by German university students seeking an alternative to LaTeX due to its awkward syntax and slow compilation speeds. Typst aims to provide a more efficient and user-friendly experience for creating     documents.
 *   **Key Features and Performance:**
 Typst stands out with its exceptional performance, utilizing incremental compilation and an advanced memoization scheme. This allows it to compile documents dramatically faster than LaTeX, often by orders of magnitude. It is capable of rendering various outputs including PDFs, images, HTML, and vector graphics, while supporting high-level scripting features.
 
@@ -200,7 +391,7 @@ Documents are created with a `.typ` extension and compiled into PDFs (or other f
 *   Fractions are defined with a simple slash.
 *   The alt modifier accesses Greek characters.
 *   Equal signs create headings, nestable up to five levels.
-                  
+
 *   **Advanced Scripting Capabilities:**
 Typst truly shines with its powerful scripting features. Users can declare variables using `let` and reference them with `#`. The `range` function creates iterable objects, and the spread syntax combined with the `table` element can automatically generate columns. Functions can be defined with `let`, support implicit returns based on conditional logic, and are both recursive and first-class. These scripting features enable dynamic content generation and complex document structures.
 
